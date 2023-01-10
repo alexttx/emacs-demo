@@ -1,9 +1,9 @@
 # Emacs Mini Tutorial
 
-I've been using Emacs for software development since forever.  Since before
-[GNU Emacs](https://en.wikipedia.org/wiki/Emacs#GNU_Emacs).
-[Gosmacs](https://en.wikipedia.org/wiki/Gosling_Emacs) was the Emacs of choice.
-To this day my `.emacs` file has snippets of elisp code from Gosmacs:
+I've been using Emacs for software development since forever.  Since before [GNU
+Emacs](https://en.wikipedia.org/wiki/Emacs#GNU_Emacs).  The de facto Emacs was
+[Gosmacs](https://en.wikipedia.org/wiki/Gosling_Emacs).  To this day my `.emacs`
+file has snippets of elisp code from Gosmacs:
 
 ```
   (defun gosmacs-next-window ()
