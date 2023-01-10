@@ -1,2 +1,138 @@
-# emacs-tutorial
-This mini tutorial covers bootstrapping a new emacs environment, package management, which-key, completion styles, projectile, magit and language servers.
+# Emacs Demo
+
+## Overview
+- Emacs package management
+- General Emacs Features (not specific to software development)
+  - Which-key
+  - Completion styles
+  - Projectile
+  - Consult
+- Feaures useful for software development:
+  - General observations
+  - Magit (work w/ git)
+  - Tagging (xref, cscope, etags, gtags, etc)
+  - Language Servers (lsp-mode)
+
+## Package management
+
+- Features are either built-in (dired) or enabled by installing packages
+    (cscope, gtags, magit, etc.)
+
+- Walk through init.el
+
+- Bootstrap when things get hosed:
+  - Mysterious errors when loading packages
+  - Problems after upgrading
+
+## which-key
+
+- Turn which-key off: `M-x which-key-mode`
+- Start a command: `C-x`; pause; enter `?`; note buffer showing possible commands.
+- Note that `?` doesn't always work -- it may bound to a command.  Try: `C-x 8 ?`.
+
+- Turn which-key on: `M-x which-key-mode`
+- Start a command: `C-x`; pause; note completion list
+- This always works
+
+- When there are too many completions to fit, use `C-h C-n` and `C-h C-p` to page next/prev.
+
+## Completion Styles
+
+### orderless and vertico
+Compare: default, orderless, vertico, orderless+vertico
+
+In each emacs session:
+- visit lib/cn, look for "reader block"
+- use "C-h v" to get help on a variable, look for "column"
+
+vertico wierdness: get used to using `M-RETURN`
+
+## Projectile
+
+Projectile provides easy project management and navigation. The concept of a
+project is pretty basic - just a folder containing special file. Currently
+most VCS repos (e.g. git, mercurial, etc) are considered projects by default, as
+are directories containing build tools (e.g. maven, leiningen, etc) or framework
+markers (e.g. Ruby on Rails). If you want to mark a folder manually as a project
+just create an empty .projectile file in it.
+
+Without orderless or vertico:
+
+- `C-c p`   Note useful-ness of which-key
+- `C-c p f` Really needs a better completion/selection UI.  Did someone say
+            orderless+vertico?
+
+With orderless+vertico:
+
+Jump to a file:
+- `C-c p f omf h`  See all omf includce files
+- `C-c p f test builder .c`  See all tests related to builders
+
+Toggle between .c and .h files:
+- `C-c p f kvset_builder.c` ; `C-c p a`
+
+Grep:
+- `C-c p s g REVISIT`
+
+IBuffer - view buffers for files in project:
+- `C-c p I`
+
+Kill all project buffers:
+- `C-c p k`
+
+Other things it can do that I haven't explored:
+- Toggle between code and its test
+- find references in project (using xref internally) (should probably just use
+  lsp, but this might be a good backup)
+- regenerate project etags or gtags (requires ggtags).
+
+## Consult
+Compare: consult, consult+orderless, consult+orderless+vertico
+
+- Visit any file
+- Use `M-g g`
+
+- Visit an outline/markdown file
+- Use `M-g o` to view outline
+- Use `C-n` and `C-p` to move up/down
+
+## Magit
+## Tagging
+
+Xref provides a unified interface to finding identifiers in a program.
+
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Xref-Commands.html
+
+Examples "tagging" systems:
+- etags/ctags -- TAGS files, the orginal?  OLD -- don't bother.
+- cscope -- better for C++?
+- GNU global -- use with emacs `gtags-mode` or newer ``ggtags-mode`
+
+No demo for `etags`, `cscope` or 'ggtags`.
+
+NOTE: this is how you did it before language servers.
+
+### gtags
+
+You can run gtags w/o using xref.  But why would you.
+
+Thigs to show:
+- `M-.`
+- `C-u M-.`
+- `M-,`
+- `M-?`, then `C-n`/`C-p` and `n`/`p`
+
+If you want more that what `xref` surfaces, use `gtags` directly.
+For example:
+- `M-x gtags-find-files`
+
+Use gtags w/ orderless and vertico.
+
+- Use `gtags-find-rtag` to see how gtags displays results natively.
+- Use `C-u M-.` to see how results are displayed when using xref as a front-end for gtags.
+- Use `ivy-xref` to see how results are displayed w/ ivy-show (a step down).
+
+TODO: forget about ivy-xref.  It is provides a new way to show xref results.
+But it seems way less powerful than `gxref` default or `gxref+orderless+vertico`.
+
+## Emacs lsp-mode
