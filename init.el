@@ -90,13 +90,13 @@
   (modify-syntax-entry ?- "w" text-mode-syntax-table)
   (modify-syntax-entry ?_ "w" text-mode-syntax-table)
 
-  (defun my-gosmacs-previous-window ()
+  (defun gosmacs-previous-window ()
     "Select the window above or to the left of the window now selected.
 From the window at the upper left corner, select the one at the lower right."
     (interactive)
     (select-window (previous-window)))
 
-  (defun my-gosmacs-next-window ()
+  (defun gosmacs-next-window ()
     "Select the window below or to the right of the window now selected.
 From the window at the lower right corner, select the one at the upper left."
     (interactive)
@@ -119,8 +119,8 @@ From the window at the lower right corner, select the one at the upper left."
   (global-set-key "\M-q"      'query-replace)
   (global-set-key "\M-r"      'replace-string)
   (global-set-key "\C-k"      'my-kill-line)
-  (global-set-key "\C-xn"     'my-gosmacs-next-window)
-  (global-set-key "\C-xp"     'my-gosmacs-previous-window))
+  (global-set-key "\C-xn"     'gosmacs-next-window)
+  (global-set-key "\C-xp"     'gosmacs-previous-window))
 
 
 ;; Use font size 12 for demo.  Not sure if this is the right way to set default

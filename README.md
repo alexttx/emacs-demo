@@ -1,13 +1,31 @@
-# Emacs Demo
+# Emacs Mini Tutorial
 
-## Overview
-- Emacs package management
-- General Emacs Features (not specific to software development)
+I've been using Emacs for software development since forever.  Since before
+[GNU Emacs](https://en.wikipedia.org/wiki/Emacs#GNU_Emacs).
+[Gosmacs](https://en.wikipedia.org/wiki/Gosling_Emacs) was the Emacs of choice.
+To this day my `.emacs` file has snippets of elisp code from Gosmacs:
+
+```
+  (defun gosmacs-next-window ()
+    "Select the window below or to the right of the window now selected.
+From the window at the lower right corner, select the one at the upper left."
+    (interactive)
+    (select-window (next-window)))
+```
+
+Then we hired a young kid.  He laughed at my misfortune and threw around phrases
+like "language server".  It took a few years, but I finally took the bait and
+jumped into 21st century Emacs.
+
+This tutorial describes some of "new" tricks I learned, such as:
+
+- emacs package management
+- General Emacs features (not specific to software development):
   - Which-key
   - Completion styles
   - Projectile
   - Consult
-- Feaures useful for software development:
+- Emacs feaures useful for software development:
   - General observations
   - Magit (work w/ git)
   - Tagging (xref, cscope, etags, gtags, etc)
