@@ -19,7 +19,7 @@ jumped into 21st century Emacs.
 
 This tutorial describes some of "new" tricks I learned, such as:
 
-- emacs package management
+- Emacs package management
 - General Emacs features (not specific to software development):
   - Which-key
   - Completion styles

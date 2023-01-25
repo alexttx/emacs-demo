@@ -1,3 +1,7 @@
+
+(setq package-user-dir
+      (concat (file-name-directory load-file-name)) "/.emacs-tutorial.d")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Emacs Package Management
@@ -59,17 +63,22 @@
  '(package-selected-packages
    '(consult consult-lsp ivy-xref lsp-ivy lsp-mode lsp-treemacs lsp-ui magit orderless projectile use-package vertico which-key yasnippet company ggtags gtags gxref)))
 
-(setq use-package-verbose 'debug);; values: nil, t, 'debug, 'errors
-(require 'use-package)
-
 (when nil
-  ;; to bootstrap or start over w/ packages:
+  ;; To bootstrap or start over w/ packages:
   ;;   mv ~/.emacs.d ~/.emacs.XXX
   ;;   emacs -Q ~/.emacs
   ;;   eval the contents of this file above this point
   ;;   eval this code:
   (package-refresh-contents)
   (package-install-selected-packages))
+
+(when t
+  ;; Not needed, but useful to see what use-package is doing.  Apparently you
+  ;; have to set use-package-verbose and then explicitly require use-package.
+  ;; Skip this section if it causes issues or you don't care to see
+  ;; use-package-verbose output.
+  (setq use-package-verbose 'debug);; values: nil, t, 'debug, 'errors
+  (require 'use-package))
 
 (when t
   ;; Personal settings: if you copy portions of this file into your .emacs file,
@@ -501,3 +510,7 @@ From the window at the lower right corner, select the one at the upper left."
 ;;                key other than j or k exits this state.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
