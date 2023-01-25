@@ -1,6 +1,24 @@
+;; This emacs init setup is based on:
+;; - https://github.com/kaushalmodi/.emacs.d/
 
-(setq package-user-dir
-      (concat (file-name-directory load-file-name)) "/.emacs-tutorial.d")
+;; The early init file should br loaded before this file.  But old versions of
+;; emacs may not support early-init, so load it here just in case.
+(when (not (and (boundp 'my-early-init-loaded) my-early-init-loaded))
+  (let ((filename (expand-file-name "early-init.el" user-emacs-directory)))
+    (message (format "Manually loading early init file: %s" filename))
+    (load filename)))
+
+;; Load newer version of .el and .elc if both are available.
+(setq load-prefer-newer t)
+
+;; Store `M-x customize` settings in its own file
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file :noerror :nomessage)
+
+;; https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
+(setq gc-cons-threshold (* 100 1024 1024)) ;100 MB before garbage collection
+
+(add-to-list 'load-path (file-name-as-directory (expand-file-name "elisp" user-emacs-directory)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -13,16 +31,21 @@
 ;; - https://www.emacswiki.org/emacs/InstallingPackages
 ;;
 ;; Notes:
-;; - Installed packages are stored in ~/.emacs.d/elpa
+;; - By default, installed packages are stored in ~/.emacs.d/elpa.  This file
+;;   changes it to ~/.emacs.d/elpa_<major>_<mino> to avoid issues when switching
+;;   between different versions of emacs.
 ;;
 ;; Troubleshooting:
-;; - If there are problems installing or upgrading, go to
-;;   ~/.emacs.d/elpa/ and delete packages that are installed multiple
-;;   times.
-;; - To start over and/or bootstrap, see instructions below (search for
-;;   "bootstrap").
+;; - If there are problems installing or upgrading, go to ~/.emacs.d/elpa/ and
+;;   delete packages that are installed multiple times.
+;; - To start over and/or bootstrap, remove the appropriate
+;;   ~/.emacs.d/elpa_<major>_<minor> dir and restart emacs.  This init file
+;;   should download and build packages automatically.
+;; - Don't forget to init and update git submodules:
+;;     git submodule init
+;;     git submodule update
 ;;
-;; Manage packages with "M-x package-list-packages":
+;; Hints for managing packages with "M-x package-list-packages":
 ;; - Sort by "Status" to see what's installed.
 ;; - To install:
 ;;   - Use "i" to mark a package for install
@@ -30,10 +53,6 @@
 ;; - To upgrade all installed packages:
 ;;   - Press "U" , then "x".  You'll be prompted to remove the
 ;;     obsolete versions once the upgrades are install.
-;;
-;; You can install packages manually by adding a package name to
-;; package-selected-packages and then evaluating
-;; "(package-install-selected-packages)".
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -48,93 +67,176 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(message (format "Using package dir %s" package-user-dir))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(consult consult-lsp ivy-xref lsp-ivy lsp-mode lsp-treemacs lsp-ui magit orderless projectile use-package vertico which-key yasnippet company ggtags gtags gxref)))
+;; These packages will be automatically downloaded and installed on startup
+;; if they are missing from your package directory.
+(defconst
+  my-packages
+  '(
+    company
+    consult
+    consult-lsp
+    ;; gtags-mode <-- via git-submodule
+    gxref
+    highlight
+    ivy-xref
+    lsp-ivy
+    lsp-mode
+    lsp-treemacs
+    lsp-ui
+    magit
+    orderless
+    projectile
+    use-package
+    vertico
+    which-key
+    yasnippet
+    ))
 
-(when nil
-  ;; To bootstrap or start over w/ packages:
-  ;;   mv ~/.emacs.d ~/.emacs.XXX
-  ;;   emacs -Q ~/.emacs
-  ;;   eval the contents of this file above this point
-  ;;   eval this code:
+;; Auto install the required packages
+;; https://github.com/bbatsov/prelude/blob/master/core/prelude-packages.el
+;; http://toumorokoshi.github.io/emacs-from-scratch-part-2-package-management.html
+(defvar my-missing-packages '()
+  "List populated at each startup that contains the list of packages that need
+to be installed.")
+
+;; Figure out which packages are missing
+(dolist (p my-packages)
+  (unless (package-installed-p p)
+    (add-to-list 'my-missing-packages p :append)))
+
+;; Install missing pacakges
+(when my-missing-packages
+  (message "Some packages are missing. Refreshing database before installing missing packages.")
   (package-refresh-contents)
-  (package-install-selected-packages))
+  (dolist (p my-missing-packages)
+    (message "Installing %s" p)
+    (package-install p))
+  (setq my-missing-packages '()))
+
+;; For troubleshooting use-package
+(setq use-package-verbose 'debug);; values: nil, t, 'debug, 'errors
+(require 'use-package)
 
 (when t
-  ;; Not needed, but useful to see what use-package is doing.  Apparently you
-  ;; have to set use-package-verbose and then explicitly require use-package.
-  ;; Skip this section if it causes issues or you don't care to see
-  ;; use-package-verbose output.
-  (setq use-package-verbose 'debug);; values: nil, t, 'debug, 'errors
-  (require 'use-package))
 
-(when t
-  ;; Personal settings: if you copy portions of this file into your .emacs file,
-  ;; feel free to omit this section.
-  (setq-default vc-handled-backends nil)
+  ;; Disable eldoc mode.  Does this work?
+  (if (fboundp 'global-eldoc-mode)
+      (global-eldoc-mode -1))
+
+  (setq delete-active-region nil)
+  (setq truncate-lines t)
+  (setq compilation-scroll-output t)
+  (setq-default vc-handled-backends nil)   ;; no auto version control please
   (setq-default indent-tabs-mode nil)
-  (setq inhibit-startup-screen t)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
+  (setq-default gdb-many-windows 1)
+  (setq-default frame-title-format '("%b"))
+  (setq-default fill-column 80)
+
+  ;; Is this the right way to set default font size?
+  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10"))
+  ;; frame size
+  (add-to-list 'default-frame-alist '(height . 45))
+  (add-to-list 'default-frame-alist '(width . 90))
+  ;; colors
+  (add-to-list 'default-frame-alist '(background-color . "grey90"))
+  (add-to-list 'default-frame-alist '(foreground-color . "black"))
+
+  (set-face-background 'mode-line-inactive "grey80")
+  (set-face-background 'mode-line "#aabbdd")
 
   (put 'narrow-to-region 'disabled nil)
 
+  ;; Present a (y or n) at the end of certain questions without
+  ;; the need for a confirmation.
+  (fset 'yes-or-no-p (symbol-function 'y-or-n-p))
+  )
+
+(when t
+  ;; tweak syntax by mode
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
+
   (modify-syntax-entry ?- "w" lisp-mode-syntax-table)
   (modify-syntax-entry ?_ "w" lisp-mode-syntax-table)
+
   (modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table)
   (modify-syntax-entry ?_ "w" emacs-lisp-mode-syntax-table)
+
   (modify-syntax-entry ?- "w" text-mode-syntax-table)
   (modify-syntax-entry ?_ "w" text-mode-syntax-table)
 
-  (defun gosmacs-previous-window ()
+  ;;(modify-syntax-entry ?_ "w" sh-mode-syntax-table)
+  )
+
+(setq my-global-key-bindings t)
+(setq my-commands t)
+
+(when (and my-global-key-bindings my-commands)
+  (defun my-gosmacs-previous-window ()
     "Select the window above or to the left of the window now selected.
 From the window at the upper left corner, select the one at the lower right."
     (interactive)
     (select-window (previous-window)))
 
-  (defun gosmacs-next-window ()
+  (defun my-gosmacs-next-window ()
     "Select the window below or to the right of the window now selected.
 From the window at the lower right corner, select the one at the upper left."
     (interactive)
     (select-window (next-window)))
 
-  (defun my-kill-line (&optional arg)
-    "Same as kill-line but kills newline if current-column = 0."
-    (interactive "P")
-    (if (or arg (bolp))
-        (kill-line (prefix-numeric-value arg))
-      (kill-line)))
+  (defun my-narrow-to-region ()
+    "No prefix arg ==> Narrow to current region.
+Prefix arg    ==> Widen."
+    (interactive)
+    (if current-prefix-arg
+        (call-interactively 'widen)
+      (call-interactively 'narrow-to-region)))
 
-  (global-set-key "\C-h"      'backward-delete-char)
-  (global-set-key "\C-xB"     (function (lambda () (interactive) (switch-to-buffer "*scratch*"))))
-  (global-set-key "\C-x\C-b"  'buffer-menu)
-  (global-set-key "\C-x\C-f"  'find-file-at-point)
-  (global-set-key "\C-x\C-v"  'find-file)
-  (global-set-key "\C-xh"     'help-command)
-  (global-set-key "\M-h"      'backward-kill-word)
-  (global-set-key "\M-q"      'query-replace)
-  (global-set-key "\M-r"      'replace-string)
-  (global-set-key "\C-k"      'my-kill-line)
-  (global-set-key "\C-xn"     'gosmacs-next-window)
-  (global-set-key "\C-xp"     'gosmacs-previous-window))
+  (defun my-kill-emacs-confirm (verify)
+    (interactive "sAre you sure you want to quit? ")
+    (if (or (string-equal verify "yes")
+            (string-equal verify "y")
+            (string-equal verify "Y")
+            (string-equal verify "yes"))
+        (save-buffers-kill-emacs))))
 
+(when my-global-key-bindings
+  ;; Global key bindings
+  (global-set-key "\C-xh"      'help-command)
+  (global-set-key "\C-xhu"     'manual-entry)
+  (global-set-key "\C-x\C-b"   'buffer-menu)
+  (global-set-key "\M-q"       'query-replace)
+  (global-set-key "\M-r"       'replace-string)
+  (global-set-key "\M-F"       'fill-paragraph)
+  (global-set-key "\C-x\C-f"   'find-file-at-point)
+  (global-set-key "\C-h"       'backward-delete-char)
+  (global-set-key "\M-h"       'backward-kill-word)
 
-;; Use font size 12 for demo.  Not sure if this is the right way to set default
-;; font, but it works.
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-12"))
+  ;; These bindings cause me pain
+  (global-unset-key "\C-\\")            ; toggle-input-method
+  (global-unset-key "\C-z")             ; iconify frame
+  (global-unset-key "\C-x\C-z")         ; suspend frame
+  (global-unset-key "\C-x\C-l")         ; lower case region
+  (global-unset-key "\C-x\C-u")         ; upper case region
+
+  ;; My own C-x C-x keymap : easy to type and an entire
+  ;; keymap to put my own bindings.
+  (defvar xx-map (make-keymap) "Keymap for custom commands.")
+  (global-set-key "\C-x\C-x" xx-map)
+
+  ;; Rebind exchange-point-and-mark since it used to be C-xC-x
+  (global-set-key "\C-x\C-m"   'exchange-point-and-mark)
+
+  (define-key xx-map " "     'set-mark-command)
+  (define-key xx-map "r"     'revert-buffer)
+  (define-key xx-map "\C-e"  'compile)
+
+  (when my-commands
+    (global-set-key "\C-xn"     'my-gosmacs-next-window)
+    (global-set-key "\C-xp"     'my-gosmacs-previous-window)
+    (global-set-key "\C-x\C-c"  'my-kill-emacs-confirm))
+  )
 
 ;; Notes on Use-package
 ;; --------------------
@@ -176,30 +278,25 @@ From the window at the lower right corner, select the one at the upper left."
 ;; For more info on completion packages, see the "Emacs Completion" comment at
 ;; and of this file.
 
-(defvar my-use-which-key nil)  ;; recommend (helps w/ key bindings)
-
-;; completion systems
-(defvar my-use-orderless nil)  ;; recommend orderless+vertico combination
-(defvar my-use-vertico nil)    ;; recommend orderless+vertico combination
-(defvar my-use-projectile nil) ;; recommend (really wants orderless+vertico)
-(defvar my-use-consult nil)    ;; has a few nice commands (also benefits 
-
-;; tagging (not bothering w/ cscope, etags, etc)
-(defvar my-use-gtags nil)    ;; recommend
-(defvar my-use-gxref nil)    ;; recommend (only works w/ gtags)
-(defvar my-use-ggtags nil)   ;; skip (gtags+gxref is nicer)
-
-;; language server protocol (requires compile_commands.json)
-(defvar my-use-lsp-mode nil)     ;; recommend
-(defvar my-use-lsp-ui nil)       ;; recommend
-(defvar my-use-lsp-ivy nil)      ;; recommend
-(defvar my-use-lsp-treemacs nil) ;; recommend
-(defvar my-use-ivy-xref nil)     ;; skip (not a fan)
-
-;; not part of demo, but i find them useful
-(defvar my-use-gfm-mode nil)  ;; github flavored markdown mode
-(defvar my-use-magit nil)     ;; super-charged git
-
+(when t
+  ;; Enable by changing from nil to t
+  (defvar my-use-which-key nil)
+  (defvar my-use-orderless nil)
+  (defvar my-use-vertico nil)
+  (defvar my-use-consult nil)
+  (defvar my-use-projectile nil)
+  (defvar my-use-gfm-mode nil)
+  (defvar my-use-dired nil)
+  (defvar my-use-magit nil)
+  (defvar my-use-gtags-mode nil) ;; better IMO than ggtags
+  (defvar my-use-gxref nil)      ;; strongly recommend gxref w/ gtags
+  (defvar my-use-ggtags nil)     ;; gtags+gxref is nicer than ggtags
+  (defvar my-use-lsp-mode nil)
+  (defvar my-use-lsp-ui nil)
+  (defvar my-use-lsp-ivy nil)
+  (defvar my-use-lsp-treemacs nil)
+  (defvar my-use-ivy-xref nil)   ;; not a fan of ivy-xref
+  )
 
 (use-package which-key
   ;; which-key is minor mode that displays key bindings for currently entered
@@ -234,7 +331,14 @@ From the window at the lower right corner, select the one at the upper left."
   (vertico-mode)
   (vertico-multiform-mode)
   (setq vertico-count 10)
+  (setq my-vertico-count-resize-increment (/ vertico-count 2))
   :bind (:map vertico-map
+              ;; You can rebind RET and M-RET to swap vertico's normal use of
+              ;; these two keys so that RET accepts what is typed and M-RET
+              ;; accepts what is matched.  IF you do this,then you need to use
+              ;; TAB to finish the completion before using RET to accept it.
+              ;;   ("RET" . vertico-exit-input)
+              ;;   ("M-RET" . exit-minibuffer)
               ("M-h" . minibuffer-completion-help)
               ("M-l" . vertico-multiform-vertical)
               ("M-g" . vertico-multiform-grid)
@@ -273,9 +377,7 @@ From the window at the lower right corner, select the one at the upper left."
   :init
   (add-hook 'gfm-mode-hook (function
                             (lambda ()
-                              ;;(my-disable-mouse)
                               (outline-minor-mode)
-                              (my-whitespace-mode-on)
                               (local-set-key "`" 'self-insert-command)
                               (local-set-key "\C-c" outline-mode-prefix-map))))
   :mode ("\\.md\\'"  . gfm-mode)
@@ -293,11 +395,10 @@ From the window at the lower right corner, select the one at the upper left."
 (use-package magit
   :if my-use-magit
   :init
-  (setq magit-auto-revert-mode nil)
   (setq my-magit-section-recenter-looking-at "@@ \\|modified")
   (add-hook 'magit-mode-hook (function
                               (lambda ()
-                                ;;(my-disable-mouse)
+                                (magit-auto-revert-mode -1);; disable
                                 (local-set-key "n" 'my-magit-section-forward)
                                 (local-set-key "p" 'my-magit-section-backward))))
   (defun my-magit-section-forward ()
@@ -318,41 +419,44 @@ From the window at the lower right corner, select the one at the upper left."
          (lambda (elt) (eq 'git-rebase-mode (cdr elt)))
          auto-mode-alist)))
 
-(use-package gtags
-  ;; - Gtags and other tagging systems (etags, cscope, ggtags, etc) are the "old"
+(use-package gtags-mode
+  ;; - Gtags and other tagging systems (etags, cscope, gtags, etc) are the "old"
   ;;   way of navigating source code. Language servers are the "new" way.
   ;; - There's a bit of conflict between gtags using xref and lsp-mode also using
   ;;   xref.  I wonder if different commands can use xref with different backends.
-  :if my-use-gtags
+  :if my-use-gtags-mode
+  :load-path "elisp/gtags-mode"
   :init
-  (add-hook
-   'gtags-mode-hook
-   (function (lambda () (setq gtags-auto-update nil))))
-  (if my-use-gxref
-      ;; plug gtags into xref
-      (add-hook
-       'gtags-mode-hook
-       (function (lambda () (setq xref-backend-functions '(gxref-xref-backend)))))
-    ;; gxref disabled: setup bindings manually (bypasses xref)
-    (define-key (current-global-map) [remap xref-find-definitions] 'gtags-find-tag)  ;; usually "M-."
-    (define-key (current-global-map) [remap xref-find-references]  'gtags-find-rtag) ;; usually "M-?"
-    (define-key (current-global-map) [remap xref-pop-marker-stack] 'gtags-pop-stack) ;; usually "M-,"
-    )
-  (add-hook 'c-mode-hook (function (lambda () (gtags-mode))))
-  (setq gtags-auto-update nil))
+  (when t
+    ;; gtags-mode.el uses `:local t` in `defcustom` declaration for these vars,
+    ;; which causes errors on emacs 27.1 because the vars evaluate to `nil` a few
+    ;; lines later in gtags-mode.el.  Maybe it's a bug in 27.1?
+    (setq gtags-mode-global-executable "global")
+    (setq gtags-mode-gtags-executable "gtags")
+    (if my-use-gxref
+        ;; plug gtags into xref
+        (add-hook
+         'gtags-mode-hook
+         (function (lambda () (setq xref-backend-functions '(gxref-xref-backend)))))
+      ;; gxref disabled: setup bindings manually (bypasses xref)
+      (define-key (current-global-map) [remap xref-find-definitions] 'gtags-find-tag)  ;; usually "M-."
+      (define-key (current-global-map) [remap xref-find-references]  'gtags-find-rtag) ;; usually "M-?"
+      (define-key (current-global-map) [remap xref-pop-marker-stack] 'gtags-pop-stack) ;; usually "M-,"
+      )
+    (setq gtags-auto-update nil)
+    (add-hook 'c-mode-hook (function (lambda () (gtags-mode 1))))
+    (add-hook 'c++-mode-hook (function (lambda () (gtags-mode 1))))
+    ))
 
 (use-package ggtags
   ;; - A replacement for gtags.
   :if my-use-ggtags
   :init
-  (add-hook 'ggtags-mode-hook
-            (function
-             (lambda ()
-               (setq ggtags-auto-update nil)
-               (setq xref-backend-functions '(gxref-xref-backend)))))
+  (setq ggtags-update-on-save nil)
+  (setq ggtags-auto-update nil)
   ;; enable ggtags in when in c-mode
-  (add-hook 'c-mode-hook (function (lambda () (ggtags-mode))))
-  (setq ggtags-auto-update nil))
+  (add-hook 'c-mode-hook (function (lambda () (ggtags-mode 1))))
+  (add-hook 'c++-mode-hook (function (lambda () (ggtags-mode 1)))))
 
 (use-package lsp-mode
   ;; - https://emacs-lsp.github.io/lsp-mode/page/installation/
@@ -371,11 +475,22 @@ From the window at the lower right corner, select the one at the upper left."
   ;; Not-so nice commands:
   ;; - C-u M-.     doesn't offer workspace symbols for completion
   :if my-use-lsp-mode
-  :init (setq lsp-keymap-prefix "C-c l")
+  :init
+  (progn
+    (setq lsp-keymap-prefix "C-c l")
+    (defun my-hookfn-lsp-mode ()
+      (let ((fn "my-hookfn-lsp-mode"))
+        (message (concat fn " enter"))
+        (if (fboundp 'lsp-enable-which-key-integration)
+            (lsp-enable-which-key-integration))
+        (message (concat fn " exit"))))
+    (add-hook 'lsp-mode-hook 'my-hookfn-lsp-mode)
+    ;;(setq lsp-enable-snippet nil)
+    ;;(setq lsp-ui-imenu-enable nil)
+    )
   :hook (
          (c-mode . lsp)
          (c++-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration) ;; optional which-key integration
          )
   :bind (
          ("M-?" . lsp-ivy-workspace-symbol) ; search for symbol w/ auto completion
@@ -387,6 +502,7 @@ From the window at the lower right corner, select the one at the upper left."
   ;; Nice commands:
   ;; - C-c l G r   lsp-ui-peek-find-references
   :if my-use-lsp-ui
+  :init
   :requires lsp
   :commands lsp-ui-mode)
 
@@ -470,6 +586,8 @@ From the window at the lower right corner, select the one at the upper left."
 ;;                Uses completing-read API.
 ;;   Company   -- Used for completion in normal buffers (as opposed to
 ;;                minibuffer). Used by IDEs to complete symbol names.
+;;   Yasnippet -- Used for completion in normal buffers (as opposed to
+;;                minibuffer). Used by IDEs to complete symbol names.
 ;;
 ;; Packages that augment completion frameworks:
 ;;
@@ -510,7 +628,3 @@ From the window at the lower right corner, select the one at the upper left."
 ;;                key other than j or k exits this state.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-
