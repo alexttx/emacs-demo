@@ -2,7 +2,11 @@
 
 ## TLDR
 
-Run emacs using initializion files in [](emacs.d):
+Run emacs using initializion files:
+- in [](./emacs.d)
+- in [emacs.d](./emacs.d)
+
+
 ```
 git clone https://github.com/alexttx/emacs-demo
 cd emacs-demo
