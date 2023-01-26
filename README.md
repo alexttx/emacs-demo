@@ -54,10 +54,11 @@ emacs -q -l demo/*.el -l demo-init.el  ~/project/src/main.c
 
 ## Experiment with emacs packages
 
-This demo supports the following packages:
+This demo supports the following packages.
+
 - [consult](https://melpa.org/#/consult)
 - [ggtags](https://melpa.org/#/ggtags)
-- [gtags-mode](https://melpa.org/#/gtags-mode)
+- [gtags-mode](https://github.com/Ergus/gtags-mode)
 - [gxref](https://melpa.org/#/gxref)
 - [ivy-xref](https://melpa.org/#/ivy-xref)
 - [lsp-ivy](https://melpa.org/#/lsp-ivy)
@@ -67,9 +68,8 @@ This demo supports the following packages:
 - [magit](https://melpa.org/#/magit)
 - [orderless](https://melpa.org/#/orderless)
 - [projectile](https://melpa.org/#/projectile)
-- [vertico](https://melpa.org/#/vertico)
 - [which-key](https://melpa.org/#/which-key)
-
+- [vertico](https://elpa.gnu.org/packages/vertico.html)
 
 ## Nifty things that can be done during emacs initialization
 ## Using this emacs.d as a template for your ~/.emacs.d
