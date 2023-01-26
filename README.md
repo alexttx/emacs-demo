@@ -13,27 +13,22 @@ From the window at the lower right corner, select the one at the upper left."
   (select-window (next-window)))
 ```
 
-Then we hired a young guy.  He laughed at my misfortune and threw around phrases
+Then we hired a young kid.  He laughed at my misfortune and threw around phrases
 like "language server".  It took a few years, but I finally took the bait and
 jumped into 21st century Emacs.  While learning about using language servers with
 Emacs, I learned of several new (to me) features.
 
 I initially created this emacs demo as a way to experiment with various emacs
-packages, (e.g., [lsp-mode](https://melpa.org/#/lsp-mode) for interacting with
-language servers), without having to modify my own emacs configuration.  Along
-the way I discovered some new (to me) features that I also wanted to experiment
-with.  It turns out the configuration files here can also be used as template
-for your own configuration files.
-
-So this demo now serves three purposes:
-- it provides a way to experiment with emacs packages in a sandbox environment
-- it provides examples of nifty things you can do during emacs initialization
+packages without having to modify my own emacs configuration.  But it is morphed
+into a demo with three purposes:
+- it facilitates experimenting with emacs packages in a sandbox environment
+- it contains examples of nifty and useful things you can do during emacs initialization
 - it can be used as a template for your `~/.emacs.d` initialization
 
 These three topics are discussed in more detail below.
 
-The code in this repo's [emacs.d](./emacs.d/) is based [Kaushal
-Modi's example emacs config files](https://github.com/kaushalmodi/.emacs.d/).
+Most of the "nifty and useful" emacs initialization tricks came from [Kaushal
+Modi's emacs config files](https://github.com/kaushalmodi/.emacs.d/).
 
 ## TLDR
 
