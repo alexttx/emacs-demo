@@ -4,15 +4,19 @@
 
 I initially created this emacs demo as a way to experiment with various emacs
 packages without having to modify my own emacs configuration.  Along the way I
-discovered some new (to me) features that I also wanted to experiment with.
-So this demo now serves two purposes:
-- provides a way to experiment with emacs packages in a sandbox environment
-- provides examples of nifty things that can be done during emacs initialization
+discovered some new (to me) features that I also wanted to experiment with.  It
+turns out the configuration files here can also be used as template for your own
+configuration files.
 
-And now a third purpose:
+So this demo now serves three purposes:
+- it provides a way to experiment with emacs packages in a sandbox environment
+- it provides examples of nifty things that can be done during emacs initialization
 - it can be used as a template for your `~/.emacs.d` initialization
 
 These three topics are discussed in more detail below.
+
+The code in this repo's [emacs.d](./emacs.d/) is based [Kaushal
+Modi's example emacs config files](https://github.com/kaushalmodi/.emacs.d/).
 
 ## Important Notes
 
@@ -28,9 +32,9 @@ These three topics are discussed in more detail below.
 
 Notes:
 - You must use emacs's `-q` or `-Q` option to disable loading the user init file
-- You must use `-l demo-init.el` as the final `-l` option (`demo-init.el` fakes
-  emacs into thinking this demo's `emacs.d` directory is the user's init
-  directory).
+- You must use `-l demo-init.el` as the final `-l` option.  The `demo-init.el`
+  file fakes emacs into thinking this demo's `emacs.d` directory is the user's
+  init directory.
 
 To run emacs using this demo's initializion files, but with no demo features
 enabled (i.e., a "vanilla" configuration):
@@ -52,20 +56,19 @@ emacs -q -l demo/*.el -l demo-init.el  ~/project/src/main.c
 
 This demo supports the following packages:
 - [consult](https://melpa.org/#/consult)
-- [ggtags](https:/melpa.org/#/ggtags)
-- [gtags-mode](https:/melpa.org/#/gtags-mode)
-- [gxref](https:/melpa.org/#/gxref)
-- [ivy-xref](https:/melpa.org/#/ivy-xref)
-- [lsp-ivy](https:/melpa.org/#/lsp-ivy)
-- [lsp-mode](https:/melpa.org/#/lsp-mode)
-- [lsp-treemacs](https:/melpa.org/#/lsp-treemacs)
-- [lsp-ui](https:/melpa.org/#/lsp-ui)
-- [magit](https:/melpa.org/#/magit)
-- [orderless](https:/melpa.org/#/orderless)
-- [projectile](https:/melpa.org/#/projectile)
-- [vertico](https:/melpa.org/#/vertico)
-- [which-key](https:/melpa.org/#/which-key)
-
+- [ggtags](https://melpa.org/#/ggtags)
+- [gtags-mode](https://melpa.org/#/gtags-mode)
+- [gxref](https://melpa.org/#/gxref)
+- [ivy-xref](https://melpa.org/#/ivy-xref)
+- [lsp-ivy](https://melpa.org/#/lsp-ivy)
+- [lsp-mode](https://melpa.org/#/lsp-mode)
+- [lsp-treemacs](https://melpa.org/#/lsp-treemacs)
+- [lsp-ui](https://melpa.org/#/lsp-ui)
+- [magit](https://melpa.org/#/magit)
+- [orderless](https://melpa.org/#/orderless)
+- [projectile](https://melpa.org/#/projectile)
+- [vertico](https://melpa.org/#/vertico)
+- [which-key](https://melpa.org/#/which-key)
 
 
 ## Nifty things that can be done during emacs initialization
