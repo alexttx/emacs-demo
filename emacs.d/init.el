@@ -186,14 +186,6 @@ From the window at the lower right corner, select the one at the upper left."
     (interactive)
     (select-window (next-window)))
 
-  (defun my-narrow-to-region ()
-    "No prefix arg ==> Narrow to current region.
-Prefix arg    ==> Widen."
-    (interactive)
-    (if current-prefix-arg
-        (call-interactively 'widen)
-      (call-interactively 'narrow-to-region)))
-
   (defun my-kill-emacs-confirm (verify)
     (interactive "sAre you sure you want to quit? ")
     (if (or (string-equal verify "yes")
