@@ -1,4 +1,0 @@
-[submodule "elisp/gtags-mode"]
-	path = elisp/gtags-mode
-	url = https://github.com/alexttx/gtags-mode.git
-	branch = alex
