@@ -1,9 +1,7 @@
 
 ;; set user-emacs-directory two dirs up from this file
 (setq user-emacs-directory
-      (concat
-       (file-name-directory (directory-file-name (file-name-directory (or load-file-name (buffer-file-name)))))
-       "/emacs.d"))
+      (concat (file-name-directory (or load-file-name (buffer-file-name))) "emacs.d"))
 
 (message (format "Demo mode: setting user-emacs-directory to %s" user-emacs-directory))
 
