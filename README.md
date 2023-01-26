@@ -16,16 +16,16 @@ From the window at the lower right corner, select the one at the upper left."
 Then we hired a young kid.  He laughed at my misfortune and threw around phrases
 like "language server".  It took a few years, but I finally took the bait and
 jumped into 21st century Emacs.  While learning about using language servers with
-Emacs, I learned of many new (to me) features.
+Emacs, I learned of many new (to me) features.  This tutorial demonstrates
+some of these "new" features, such as:
 
-This tutorial describes some of "new" features, such as:
-
-- Emacs package management
-   - Using different pacakge dirs for different versions of Emacs
-   - Automatically downloading and building packages when first starting Emacs
-- Using ~/.emacs.d/init.el instead of ~/.emacs
+- Emacs startup
+  - Using ~/.emacs.d/init.el instead of ~/.emacs
   - A self contained configuration, amenable to use with Git
   - Using Git submodules to access packages not found on the standard package servers
+- Package management
+   - Using different pacakge dirs for different versions of Emacs
+   - Automatically downloading and building packages when first starting Emacs
 - General Emacs features (not specific to software development):
   - Which-key
   - Completion styles
@@ -37,7 +37,8 @@ This tutorial describes some of "new" features, such as:
   - Tagging (xref, cscope, etags, gtags, etc)
   - Language Servers (lsp-mode)
 
-## Emacs Initialization and Package Management
+## Emacs Startup
+## Package Management
 
 - Walk through init.el
 
