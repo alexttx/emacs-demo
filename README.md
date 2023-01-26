@@ -1,4 +1,16 @@
-# Emacs Mini Tutorial
+# Emacs Mini Demo
+
+## TLDR
+
+Run emacs using initializion files in [](emacs.d):
+```
+git clone https://github.com/alexttx/emacs-demo
+cd emacs-demo
+emacs -q demo/init
+```
+
+
+## Intro
 
 I've been using Emacs for software development since forever.  Since before [GNU
 Emacs](https://en.wikipedia.org/wiki/Emacs#GNU_Emacs).  Back then the de facto
@@ -16,7 +28,7 @@ From the window at the lower right corner, select the one at the upper left."
 Then we hired a young kid.  He laughed at my misfortune and threw around phrases
 like "language server".  It took a few years, but I finally took the bait and
 jumped into 21st century Emacs.  While learning about using language servers with
-Emacs, I learned of many new (to me) features.  This tutorial demonstrates
+Emacs, I learned of many new (to me) features.  This little demo demonstrates
 some of these "new" features, such as:
 
 - Emacs startup
@@ -24,14 +36,14 @@ some of these "new" features, such as:
   - A self contained configuration, amenable to use with Git
   - Using Git submodules to access packages not found on the standard package servers
 - Package management
-   - Using different pacakge dirs for different versions of Emacs
+   - Using different package dirs for different versions of Emacs
    - Automatically downloading and building packages when first starting Emacs
-- General Emacs features (not specific to software development):
+- Emacs packages not specific to software development:
   - Which-key
   - Completion styles
   - Projectile
   - Consult
-- Emacs feaures useful for software development:
+- Emacs packages geared toward software development:
   - General observations
   - Magit (work w/ git)
   - Tagging (xref, cscope, etags, gtags, etc)
@@ -39,7 +51,7 @@ some of these "new" features, such as:
 
 ## Emacs Startup
 
-Theres
+References:
 
 https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html
 I switched from a single `$HOME/.emacs
