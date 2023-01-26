@@ -55,10 +55,11 @@ emacs -q -l demo/*.el -l demo-init.el  ~/project/src/main.c
 ## Experiment with emacs packages
 
 This demo supports the following packages:
-- [consult](https://melpa.org/#/consult)
-- [gfm-mode](https://melpa.org/#/https://melpa.org/#/markdown-mode) (part of the markdown-mode package)
-- [ggtags](https://melpa.org/#/ggtags)
-- [gtags-mode](https://github.com/Ergus/gtags-mode)
+- [consult](https://melpa.org/#/consult) - Consulting completing-read
+- [gfm-mode](https://melpa.org/#/markdown-mode) - Major mode for Markdown-formatted text
+- [ggtags](https://melpa.org/#/ggtags) - frontend to GNU Global source code tagging system
+- [gtags-mode](https://github.com/Ergus/gtags-mode) - GNU Global integration
+  with xref, project, completion-at-point (capf) and imenu
 - [gxref](https://melpa.org/#/gxref)
 - [ivy-xref](https://melpa.org/#/ivy-xref)
 - [lsp-ivy](https://melpa.org/#/lsp-ivy)
