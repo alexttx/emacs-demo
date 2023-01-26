@@ -54,9 +54,9 @@ emacs -q -l demo/*.el -l demo-init.el  ~/project/src/main.c
 
 ## Experiment with emacs packages
 
-This demo supports the following packages.
-
+This demo supports the following packages:
 - [consult](https://melpa.org/#/consult)
+- [gfm-mode](https://melpa.org/#/https://melpa.org/#/markdown-mode) (part of the markdown-mode package)
 - [ggtags](https://melpa.org/#/ggtags)
 - [gtags-mode](https://github.com/Ergus/gtags-mode)
 - [gxref](https://melpa.org/#/gxref)

@@ -86,6 +86,7 @@
     lsp-treemacs
     lsp-ui
     magit
+    markdown-mode
     orderless
     projectile
     use-package
@@ -372,7 +373,7 @@ Prefix arg    ==> Widen."
   :bind (:map projectile-mode-map ("C-c p" . projectile-command-map)))
 
 (use-package gfm-mode
-  ;; github flavored markdown mode (part of markdown--mode)
+  ;; github flavored markdown mode (part of markdown-mode)
   :if my-use-gfm-mode
   :init
   (add-hook 'gfm-mode-hook (function
