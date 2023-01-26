@@ -60,14 +60,15 @@ This demo supports the following packages:
 - [ggtags](https://melpa.org/#/ggtags) - frontend to GNU Global source code tagging system
 - [gtags-mode](https://github.com/Ergus/gtags-mode) - GNU Global integration
   with xref, project, completion-at-point (capf) and imenu
-- [gxref](https://melpa.org/#/gxref)
-- [ivy-xref](https://melpa.org/#/ivy-xref)
-- [lsp-ivy](https://melpa.org/#/lsp-ivy)
-- [lsp-mode](https://melpa.org/#/lsp-mode)
-- [lsp-treemacs](https://melpa.org/#/lsp-treemacs)
-- [lsp-ui](https://melpa.org/#/lsp-ui)
-- [magit](https://melpa.org/#/magit)
-- [orderless](https://melpa.org/#/orderless)
+- [gxref](https://melpa.org/#/gxref) - xref backend using GNU Global.
+- [ivy-xref](https://melpa.org/#/ivy-xref) -Ivy interface for xref results
+- [lsp-ivy](https://melpa.org/#/lsp-ivy) - LSP ivy integration
+- [lsp-mode](https://melpa.org/#/lsp-mode) - Emacs client/library for the Language Server Protocol
+- [lsp-treemacs](https://melpa.org/#/lsp-treemacs) - `lsp-mode' and `treemacs' integration.
+- [lsp-ui](https://melpa.org/#/lsp-ui) - lsp-ui contains a series of useful UI
+  integrations for lsp-mode, like flycheck support and code lenses.
+- [magit](https://melpa.org/#/magit) - A Git porcelain inside Emacs.
+- [orderless](https://melpa.org/#/orderless) - Completion style for matching regexps in any order
 - [projectile](https://melpa.org/#/projectile)
 - [which-key](https://melpa.org/#/which-key)
 - [vertico](https://elpa.gnu.org/packages/vertico.html)
