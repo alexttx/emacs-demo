@@ -166,3 +166,33 @@ But it seems way less powerful than `gxref` default or `gxref+orderless+vertico`
 
 ### Emacs lsp-mode
 
+
+emacs -q -g 80x34 -l null.el -l demo.el
+
+emacs -q -g 80x34 -l null.el -l demo.el
+
+
+
+./demo.sh ~/w/src/hse/hse/lib/cn & sleep 2
+
+./demo.sh                           ~/w/src/hse/hse/lib/cn & sleep 2
+./demo.sh orderless.el              ~/w/src/hse/hse/lib/cn & sleep 2
+./demo.sh vertico.el                ~/w/src/hse/hse/lib/cn & sleep 2
+./demo.sh orderless.el vertico.el   ~/w/src/hse/hse/lib/cn & sleep 2
+
+./demo.sh                                     ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
+./demo.sh consult.el                          ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
+./demo.sh consult.el vertico.el               ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
+./demo.sh consult.el vertico.el orderless.el  ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
+
+./demo.sh                                           +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+./demo.sh gtags.el                                  +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+./demo.sh gtags.el gxref.el                         +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+./demo.sh gtags.el gxref.el orderless.el vertico.el +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+
+./demo.sh projectile.el                           ~/w/src/hse/hse & sleep 2
+./demo.sh projectile.el orderless.el vertico.el   ~/w/src/hse/hse & sleep 2
+
+./demo.sh gtags.el gxref.el orderless.el vertico.el               +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+./demo.sh lsp-mode.el orderless.el vertico.el                     +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+./demo.sh lsp-mode.el gtags.el gxref.el orderless.el vertico.el   +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
