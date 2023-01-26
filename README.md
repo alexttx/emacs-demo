@@ -50,18 +50,11 @@ emacs -q -l demo/*.el -l demo-init.el  ~/project/src/main.c
 
 ## Important notes
 
-- Running emacs as described here (with `emacs -q`) bypasses your normal emacs
-  startup files.  This is intentional because I wanted to be able to experiment
-  with new packages without cross contamination between my configuration and the
-  new package.
+- You must use emacs's `-q` or `-Q` option to disable loading the user init file.
 - The first time you run emacs version `X.Y` with these config files, a variety of
   emacs packages will be automatically download to `emacs.d/elpa_X_Y`.  This
-  takes about 5 minutes, and of course an Internet connection is needed.
-- You must use emacs's `-q` or `-Q` option to disable loading the user init file
-- You must use `-l demo-init.el` as the final `-l` option.  The `demo-init.el`
-  file fakes emacs into thinking this demo's `emacs.d` directory is the user's
-  init directory.
-
+  takes less than 5 minutes on modern computer with a good Internet connection.
+- You must use `-l demo-init.el` as the final `-l` option.
 
 ## Experimenting with emacs packages
 
