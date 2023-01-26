@@ -64,14 +64,14 @@ This demo supports the following packages:
 - [ivy-xref](https://melpa.org/#/ivy-xref) -Ivy interface for xref results
 - [lsp-ivy](https://melpa.org/#/lsp-ivy) - LSP ivy integration
 - [lsp-mode](https://melpa.org/#/lsp-mode) - Emacs client/library for the Language Server Protocol
-- [lsp-treemacs](https://melpa.org/#/lsp-treemacs) - `lsp-mode' and `treemacs' integration.
+- [lsp-treemacs](https://melpa.org/#/lsp-treemacs) - lsp-mode and treemacs integration
 - [lsp-ui](https://melpa.org/#/lsp-ui) - lsp-ui contains a series of useful UI
-  integrations for lsp-mode, like flycheck support and code lenses.
-- [magit](https://melpa.org/#/magit) - A Git porcelain inside Emacs.
+  integrations for lsp-mode, like flycheck support and code lenses
+- [magit](https://melpa.org/#/magit) - A Git porcelain inside Emacs
 - [orderless](https://melpa.org/#/orderless) - Completion style for matching regexps in any order
-- [projectile](https://melpa.org/#/projectile)
-- [which-key](https://melpa.org/#/which-key)
-- [vertico](https://elpa.gnu.org/packages/vertico.html)
+- [projectile](https://melpa.org/#/projectile) - Manage and navigate projects in Emacs easily
+- [which-key](https://melpa.org/#/which-key) - Display available keybindings in popup
+- [vertico](https://elpa.gnu.org/packages/vertico.html) - VERTical Interactive COmpletion
 
 ## Nifty things that can be done during emacs initialization
 ## Using this emacs.d as a template for your ~/.emacs.d
