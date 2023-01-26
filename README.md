@@ -38,6 +38,13 @@ some of these "new" features, such as:
   - Language Servers (lsp-mode)
 
 ## Emacs Startup
+
+Theres
+
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html
+I switched from a single `$HOME/.emacs
+
+
 ## Package Management
 
 - Walk through init.el
