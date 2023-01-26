@@ -1,9 +1,9 @@
 # Emacs Mini Tutorial
 
 I've been using Emacs for software development since forever.  Since before [GNU
-Emacs](https://en.wikipedia.org/wiki/Emacs#GNU_Emacs).  The de facto Emacs was
-[Gosmacs](https://en.wikipedia.org/wiki/Gosling_Emacs).  To this day my `.emacs`
-file has snippets of elisp code from Gosmacs:
+Emacs](https://en.wikipedia.org/wiki/Emacs#GNU_Emacs).  Back then the de facto
+Emacs was [Gosmacs](https://en.wikipedia.org/wiki/Gosling_Emacs).  To this day
+my `.emacs` file has snippets of elisp code from Gosmacs:
 
 ```
   (defun gosmacs-next-window ()
@@ -15,11 +15,17 @@ From the window at the lower right corner, select the one at the upper left."
 
 Then we hired a young kid.  He laughed at my misfortune and threw around phrases
 like "language server".  It took a few years, but I finally took the bait and
-jumped into 21st century Emacs.
+jumped into 21st century Emacs.  While learning about using language servers with
+Emacs, I learned of many new (to me) features.
 
-This tutorial describes some of "new" tricks I learned, such as:
+This tutorial describes some of "new" features, such as:
 
 - Emacs package management
+   - Using different pacakge dirs for different versions of Emacs
+   - Automatically downloading and building packages when first starting Emacs
+- Using ~/.emacs.d/init.el instead of ~/.emacs
+  - A self contained configuration, amenable to use with Git
+  - Using Git submodules to access packages not found on the standard package servers
 - General Emacs features (not specific to software development):
   - Which-key
   - Completion styles
@@ -31,18 +37,16 @@ This tutorial describes some of "new" tricks I learned, such as:
   - Tagging (xref, cscope, etags, gtags, etc)
   - Language Servers (lsp-mode)
 
-## Package management
-
-- Features are either built-in (dired) or enabled by installing packages
-    (cscope, gtags, magit, etc.)
+## Emacs Initialization and Package Management
 
 - Walk through init.el
 
-- Bootstrap when things get hosed:
-  - Mysterious errors when loading packages
-  - Problems after upgrading
+- Features are either built-in (dired), enabled by installing packages (cscope,
+  gtags, magit, etc.), or by loading locally hosted Elisp files (e.g., Elisp
+  code you wrote or copied from a friend).
 
-## which-key
+## Useful Features
+### which-key
 
 - Turn which-key off: `M-x which-key-mode`
 - Start a command: `C-x`; pause; enter `?`; note buffer showing possible commands.
@@ -54,9 +58,8 @@ This tutorial describes some of "new" tricks I learned, such as:
 
 - When there are too many completions to fit, use `C-h C-n` and `C-h C-p` to page next/prev.
 
-## Completion Styles
+### Completion Styles: orderless and vertico
 
-### orderless and vertico
 Compare: default, orderless, vertico, orderless+vertico
 
 In each emacs session:
@@ -65,7 +68,7 @@ In each emacs session:
 
 vertico wierdness: get used to using `M-RETURN`
 
-## Projectile
+### Projectile
 
 Projectile provides easy project management and navigation. The concept of a
 project is pretty basic - just a folder containing special file. Currently
@@ -104,7 +107,7 @@ Other things it can do that I haven't explored:
   lsp, but this might be a good backup)
 - regenerate project etags or gtags (requires ggtags).
 
-## Consult
+### Consult
 Compare: consult, consult+orderless, consult+orderless+vertico
 
 - Visit any file
@@ -114,8 +117,8 @@ Compare: consult, consult+orderless, consult+orderless+vertico
 - Use `M-g o` to view outline
 - Use `C-n` and `C-p` to move up/down
 
-## Magit
-## Tagging
+### Magit
+### Tagging
 
 Xref provides a unified interface to finding identifiers in a program.
 
@@ -130,7 +133,7 @@ No demo for `etags`, `cscope` or 'ggtags`.
 
 NOTE: this is how you did it before language servers.
 
-### gtags
+#### gtags
 
 You can run gtags w/o using xref.  But why would you.
 
@@ -153,5 +156,5 @@ Use gtags w/ orderless and vertico.
 TODO: forget about ivy-xref.  It is provides a new way to show xref results.
 But it seems way less powerful than `gxref` default or `gxref+orderless+vertico`.
 
-## Emacs lsp-mode
+### Emacs lsp-mode
 
