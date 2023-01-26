@@ -19,8 +19,8 @@ jumped into 21st century Emacs.  While learning about using language servers wit
 Emacs, I learned of several new (to me) features.
 
 I initially created this emacs demo as a way to experiment with various emacs
-packages without having to modify my own emacs configuration.  But it is morphed
-into a demo with three purposes:
+packages without having to modify my own emacs configuration.  But it has morphed
+into a demo with three distinct values:
 - it facilitates experimenting with emacs packages in a sandbox environment
 - it contains examples of nifty and useful things you can do during emacs initialization
 - it can be used as a template for your `~/.emacs.d` initialization
