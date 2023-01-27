@@ -120,16 +120,16 @@ emacs -q -l demo/which-key.el -l demo-init.el
 ```
 
 You should see a `WK` the mode line indicating which-key is enabled.  Now type
-`C-x` and then pause for a few seconds.  `C-x` is an "incomplete command".  Which-key
-notices incomplete commands 
+`C-x` and then pause for a few seconds. `C-x` is now an "incomplete command".
 
-Notice the completion list that pops
-into view. You can't not notice it.  This can be annoying at first, but after a
+Notice the completion list that pops into view in response to the incomplete
+command.  You can't not notice it.  This can be annoying at first, but after a
 while the benefit of having a list of all possible next keys is quite valuable.
 
 You can page through completions with `C-h n` and `C-h p`.  Note `C-h n n` does
-do what you might expect.  The second `n` will fed to the keymap, in this case
-resulting executing whatever command is bound to `C-x n`.
+do what you might expect.  The second `n` will fed to the keymap of the
+incomplete command, in this case executing whatever command is bound
+to `C-x n`.
 
 Other which-key subcommands are:
 - `C-h n` - scroll down
@@ -138,20 +138,18 @@ Other which-key subcommands are:
 - `C-h h` - show a help buffer with all bindings base on the incomplete command
 - `C-h a` - abort
 
-Now turn which-key mode off by typing `M-x which-key-mode`.  You should see the
-`WK` disappear from the mode line.
+Now turn which-key mode off by typing `M-x which-key-mode` (this toggles
+which-key).  You should see the `WK` disappear from the mode line.
 
 Once agan, type `C-x` and then pause for a few seconds, then type `?`.  You'll
 should see help buffer with a list of all key bindings starting with `C-x`.
-Type `C-g` to cancel the command.
+Typing `C-g` will cancel the incomplete command but leave the help buffer.
+You can access this same help buffer when which-key is enabled with `C-h h`.
 
 One more test: type `C-x 8`, pause, then type `?`. Instead of getting the help
 buffer you get an upside-down question mark inserted into the buffer.  This is
 because `C-x 8 ?` is bound to a command that inserts an upside-down question
 mark into the buffer.  Which-key doesn't have this limitation.
-
-Note if you type `C-h h` when which-key is presenting a completion list, it will
-present that same help buffer you get when you use `?` without which-key.
 
 Some things you can customize with which-key:
 - the delay for detecting an incomplete command
@@ -162,7 +160,8 @@ For more info:
 
 #### Completion Styles: orderless and vertico
 
-Compare: default, orderless, vertico, orderless+vertico
+Compare: default, orderless, vertico, orderless+vertico by running four emacs
+sessions side by side:
 ```
 ./demo.sh                           ~/w/src/hse/hse/lib/cn & sleep 2
 ./demo.sh orderless.el              ~/w/src/hse/hse/lib/cn & sleep 2

@@ -332,7 +332,7 @@ From the window at the lower right corner, select the one at the upper left."
               ;; TAB to finish the completion before using RET to accept it.
               ;;   ("RET" . vertico-exit-input)
               ;;   ("M-RET" . exit-minibuffer)
-              ("M-h" . minibuffer-completion-help)
+              ("M-H" . minibuffer-completion-help)
               ("M-l" . vertico-multiform-vertical)
               ("M-g" . vertico-multiform-grid)
               ("M-r" . vertico-multiform-reverse)
