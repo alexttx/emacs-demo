@@ -32,6 +32,15 @@ Modi's emacs config files](https://github.com/kaushalmodi/.emacs.d/).
 
 ## TLDR
 
+After cloning:
+```
+git submodule init
+git submodule update
+```
+
+The first time you run emacs wiht these init files, it will download and install
+about a dozen packages.
+
 To run emacs using this demo's initializion files, but with no demo features
 enabled (i.e., a "vanilla" configuration):
 ```
@@ -53,7 +62,7 @@ emacs -q -l demo/*.el -l demo-init.el  ~/project/src/main.c
 - You must use emacs's `-q` or `-Q` option to disable loading the user init file.
 - The first time you run emacs version `X.Y` with these config files, a variety of
   emacs packages will be automatically download to `emacs.d/elpa_X_Y`.  This
-  takes less than 5 minutes on modern computer with a good Internet connection.
+  takes less than 3 minutes on a 2018 laptop with a good Internet connection.
 - You must use `-l demo-init.el` as the final `-l` option.
 
 ## Experimenting with emacs packages
@@ -100,15 +109,56 @@ emacs -q -l demo/orderless.el -l demo/vertico.el \
 
 #### which-key
 
-- Turn which-key off: `M-x which-key-mode`
-- Start a command: `C-x`; pause; enter `?`; note buffer showing possible commands.
-- Note that `?` doesn't always work -- it may bound to a command.  Try: `C-x 8 ?`.
+Which-key is minor mode that displays key bindings for currently entered
+incomplete commands in a popup.  The popup window can be distracting, but it is
+extremely useful if you haven't memorized all of emacs' 300 million key
+bindings.
 
-- Turn which-key on: `M-x which-key-mode`
-- Start a command: `C-x`; pause; note completion list
-- This always works
+Start emacs with which-key enabled:
+```
+emacs -q -l demo/which-key.el -l demo-init.el
+```
 
-- When there are too many completions to fit, use `C-h C-n` and `C-h C-p` to page next/prev.
+You should see a `WK` the mode line indicating which-key is enabled.  Now type
+`C-x` and then pause for a few seconds.  `C-x` is an "incomplete command".  Which-key
+notices incomplete commands 
+
+Notice the completion list that pops
+into view. You can't not notice it.  This can be annoying at first, but after a
+while the benefit of having a list of all possible next keys is quite valuable.
+
+You can page through completions with `C-h n` and `C-h p`.  Note `C-h n n` does
+do what you might expect.  The second `n` will fed to the keymap, in this case
+resulting executing whatever command is bound to `C-x n`.
+
+Other which-key subcommands are:
+- `C-h n` - scroll down
+- `C-h p` - scroll up
+- `C-h d` - show doc strings (try it!)
+- `C-h h` - show a help buffer with all bindings base on the incomplete command
+- `C-h a` - abort
+
+Now turn which-key mode off by typing `M-x which-key-mode`.  You should see the
+`WK` disappear from the mode line.
+
+Once agan, type `C-x` and then pause for a few seconds, then type `?`.  You'll
+should see help buffer with a list of all key bindings starting with `C-x`.
+Type `C-g` to cancel the command.
+
+One more test: type `C-x 8`, pause, then type `?`. Instead of getting the help
+buffer you get an upside-down question mark inserted into the buffer.  This is
+because `C-x 8 ?` is bound to a command that inserts an upside-down question
+mark into the buffer.  Which-key doesn't have this limitation.
+
+Note if you type `C-h h` when which-key is presenting a completion list, it will
+present that same help buffer you get when you use `?` without which-key.
+
+Some things you can customize with which-key:
+- the delay for detecting an incomplete command
+- trigger which-key on demand rather than automatically
+
+For more info:
+- https://github.com/justbur/emacs-which-key
 
 #### Completion Styles: orderless and vertico
 
