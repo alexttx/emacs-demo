@@ -347,9 +347,8 @@ From the window at the lower right corner, select the one at the upper left."
           (file (vertico-sort-function . my-vertico-sort-directories-first)))))
 
 (use-package consult
-  ;; Consult offers several interesting commands.  I think it has been
-  ;; superseded by orderless+vertico.  But it has some custom commands
-  ;; that are interesting:
+  ;; I think consult has been superseded by orderless+vertico, but it has some
+  ;; custom commands that are interesting.  In particular:
   ;; - consult-goto-line
   ;; - consult-outline (for markdown files, use w/ vertico)
   :if my-use-consult
