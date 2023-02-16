@@ -1,73 +1,20 @@
-# Emacs Mini Demo
+# Sandbox Demo of a Variety of Emacs Packages
 
-I've been using Emacs for software development since forever.  Since before [GNU
-Emacs](https://en.wikipedia.org/wiki/Emacs#GNU_Emacs).  Back then the de facto
-Emacs was [Gosmacs](https://en.wikipedia.org/wiki/Gosling_Emacs).  To this day
-my emacs startup files have snippets of code from Gosmacs:
-
-```
-(defun gosmacs-next-window ()
-  "Select the window below or to the right of the window now selected.
-From the window at the lower right corner, select the one at the upper left."
-  (interactive)
-  (select-window (next-window)))
-```
-
-Then we hired a young kid.  He laughed at my misfortune and threw around phrases
-like "language server".  It took a few years, but I finally took the bait and
-jumped into 21st century Emacs.  While learning about using language servers with
-Emacs, I learned of several new (to me) features.
-
-I initially created this emacs demo as a way to experiment with various emacs
-packages without having to modify my own emacs configuration.  But it has morphed
-into a demo with three distinct values:
-- it facilitates experimenting with emacs packages in a sandbox environment
-- it contains examples of nifty and useful things you can do during emacs initialization
+I initially created this collection of Emacs initialization files as a way to
+experiment with various Emacs packages without having to modify my own Emacs
+configuration.  But it has morphed into a sort of demo with three distinct values:
+- it facilitates experimenting with Emacs packages in a sandbox environment
+- it contains examples of nifty and useful things you can do during Emacs initialization
 - it can be used as a template for your `~/.emacs.d` initialization
 
 These three topics are discussed in more detail below.
 
-Most of the "nifty and useful" emacs initialization tricks came from [Kaushal
-Modi's emacs config files](https://github.com/kaushalmodi/.emacs.d/).
+Most of the "nifty and useful" Emacs initialization tricks came from [Kaushal
+Modi's Emacs config files](https://github.com/kaushalmodi/.emacs.d/).
 
-## TLDR
+## Demo Package List
 
-After cloning:
-```
-git submodule init
-git submodule update
-```
-
-The first time you run emacs wiht these init files, it will download and install
-about a dozen packages.
-
-To run emacs using this demo's initializion files, but with no demo features
-enabled (i.e., a "vanilla" configuration):
-```
-emacs -q -l demo-init.el ~/project/src/main.c
-```
-
-To run emacs with `orderless` and `vertico` enabled:
-```
-emacs -q -l demo/orderless.el  -l demo/vertico.el -l demo-init.el  ~/project/src/main.c
-```
-
-To run emacs with all demo packages enabled:
-```
-emacs -q -l demo/*.el -l demo-init.el  ~/project/src/main.c
-```
-
-## Important notes
-
-- You must use emacs's `-q` or `-Q` option to disable loading the user init file.
-- The first time you run emacs version `X.Y` with these config files, a variety of
-  emacs packages will be automatically download to `emacs.d/elpa_X_Y`.  This
-  takes less than 3 minutes on a 2018 laptop with a good Internet connection.
-- You must use `-l demo-init.el` as the final `-l` option.
-
-## Experimenting with emacs packages
-
-This demo supports the following packages:
+This demo uses the following packages:
 - [consult](https://melpa.org/#/consult) - Consulting completing-read
 - [gfm-mode](https://melpa.org/#/markdown-mode) - Major mode for Markdown-formatted text
 - [ggtags](https://melpa.org/#/ggtags) - frontend to GNU Global source code tagging system
@@ -87,36 +34,46 @@ This demo supports the following packages:
 - [vertico](https://elpa.gnu.org/packages/vertico.html) - VERTical Interactive COmpletion
 
 
-To run a vanilla emacs with none of the above packages enabled:
+## How to use this demo
+
+After cloning:
 ```
-emacs -q -l demo-init.el  ~/project/src
+git submodule init
+git submodule update
 ```
 
-Each of the packages in the above list has a corresponding elisp file in the
-`demo` directory.  To enable a package, add `-l demo/<packge>.el` the emacs
-command line *before* `-l demo-init.el`.  For example, to enable `which-key`, run:
+To run Emacs using this demo's initializion files, but with no demo features
+enabled (i.e., a "vanilla" configuration):
 ```
-emacs -q -l demo/which-key.el -l demo-init.el  ~/project/src
+./demo/demo.sh -- ~/project/src/main.c
 ```
 
-To enable `orderless`, `vertico` and `projectile`:
+To run Emacs with `orderless` and `vertico` enabled:
 ```
-emacs -q -l demo/orderless.el -l demo/vertico.el \
-    -l demo/projectile.el -l demo-init.el  ~/project/src
+./demo/demo.sh orderless vertico -- ~/project/src/main.c
 ```
+
+To run Emacs with all demo packages enabled:
+```
+./demo/demo.sh demo/*.el -- ~/project/src/main.c
+```
+
+The following sections provide a walk-through of some of the packages included in this demo.
+
+## Package walk-through
 
 ### Packages useful outside of software development
 
 #### which-key
 
-Which-key is minor mode that displays key bindings for currently entered
-incomplete commands in a popup.  The popup window can be distracting, but it is
-extremely useful if you haven't memorized all of emacs' 300 million key
-bindings.
+"Which-key" is a minor mode that displays key bindings for currently entered
+incomplete commands in a popup.  Wich-key is extremely useful if you haven't
+memorized all of Emacs' 300 million key bindings.  The popup window can be
+distracting, but over time you get used to it.
 
-Start emacs with which-key enabled:
+Start Emacs with which-key enabled:
 ```
-emacs -q -l demo/which-key.el -l demo-init.el
+./demo/demo.sh which-key
 ```
 
 You should see a `WK` the mode line indicating which-key is enabled.  Now type
@@ -127,9 +84,8 @@ command.  You can't not notice it.  This can be annoying at first, but after a
 while the benefit of having a list of all possible next keys is quite valuable.
 
 You can page through completions with `C-h n` and `C-h p`.  Note `C-h n n` does
-do what you might expect.  The second `n` will fed to the keymap of the
-incomplete command, in this case executing whatever command is bound
-to `C-x n`.
+do what you might expect: the second `n` will be processes by the keymap of the
+incomplete command, in this case executing whatever command is bound to `C-x n`.
 
 Other which-key subcommands are:
 - `C-h n` - scroll down
@@ -141,7 +97,7 @@ Other which-key subcommands are:
 Now turn which-key mode off by typing `M-x which-key-mode` (this toggles
 which-key).  You should see the `WK` disappear from the mode line.
 
-Once agan, type `C-x` and then pause for a few seconds, then type `?`.  You'll
+Once agan, type `C-x` and then pause for a few seconds, then type `?`.  You
 should see help buffer with a list of all key bindings starting with `C-x`.
 Typing `C-g` will cancel the incomplete command but leave the help buffer.
 You can access this same help buffer when which-key is enabled with `C-h h`.
@@ -160,16 +116,16 @@ For more info:
 
 #### Completion Styles: orderless and vertico
 
-Compare: default, orderless, vertico, orderless+vertico by running four emacs
+Compare: default, orderless, vertico, orderless+vertico by running four Emacs
 sessions side by side:
 ```
-./demo.sh                           ~/w/src/hse/hse/lib/cn & sleep 2
-./demo.sh orderless.el              ~/w/src/hse/hse/lib/cn & sleep 2
-./demo.sh vertico.el                ~/w/src/hse/hse/lib/cn & sleep 2
-./demo.sh orderless.el vertico.el   ~/w/src/hse/hse/lib/cn & sleep 2
+./demo/demo.sh &
+./demo/demo.sh orderless &
+./demo/demo.sh vertico &
+./demo/demo.sh orderless vertico &
 ```
 
-In each emacs session:
+In each Emacs session:
 - visit lib/cn, look for "reader block"
 - use "C-h v" to get help on a variable, look for "column"
 
@@ -178,8 +134,8 @@ vertico wierdness: get used to using `M-RETURN`
 #### Projectile
 
 ```
-./demo.sh projectile.el                           ~/w/src/hse/hse & sleep 2
-./demo.sh projectile.el orderless.el vertico.el   ~/w/src/hse/hse & sleep 2
+./demo/demo.sh projectile &
+./demo/demo.sh projectile orderless vertico &
 ```
 
 Projectile provides easy project management and navigation. The concept of a
@@ -197,12 +153,13 @@ Without orderless or vertico:
 
 With orderless+vertico:
 
-Jump to a file:
+Visit files:
 - `C-c p f omf h`  See all omf includce files
 - `C-c p f test builder .c`  See all tests related to builders
 
-Toggle between .c and .h files:
-- `C-c p f kvset_builder.c` ; `C-c p a`
+Visit "alternate" file:
+- Visit a `.c` file that has a corresponding `.h` file, then type `C-c p a`.  It
+  should visit jump to the `.h` file.  Repeat to go back to the `.c` file.
 
 Grep:
 - `C-c p s g REVISIT`
@@ -215,18 +172,18 @@ Kill all project buffers:
 
 Other things it can do that I haven't explored:
 - Toggle between code and its test
-- find references in project (using xref internally) (should probably just use
+- Find references in project (using xref internally) (should probably just use
   lsp, but this might be a good backup)
-- regenerate project etags or gtags (requires ggtags).
+- Regenerate project etags or gtags (requires ggtags).
 
 #### Consult
 
 Compare: consult, consult+orderless, consult+orderless+vertico
 ```
-./demo.sh                                     ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
-./demo.sh consult.el                          ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
-./demo.sh consult.el vertico.el               ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
-./demo.sh consult.el vertico.el orderless.el  ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
+./demo/demo.sh                            ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
+./demo/demo.sh consult                    ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
+./demo/demo.sh consult vertico            ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
+./demo/demo.sh consult vertico orderless  ~/w/src/hse/hse/docs/cn_omf.md & sleep 2
 ```
 
 - Visit any file
@@ -238,7 +195,7 @@ Compare: consult, consult+orderless, consult+orderless+vertico
 
 ### Packages geared toward software development
 
-### Tagging
+#### Tagging
 
 Xref provides a unified interface to finding identifiers in a program.
 
@@ -247,7 +204,7 @@ https://www.gnu.org/software/emacs/manual/html_node/emacs/Xref-Commands.html
 Examples "tagging" systems:
 - etags/ctags -- TAGS files, the orginal?  OLD -- don't bother.
 - cscope -- better for C++?
-- GNU global -- use with emacs `gtags-mode` or newer ``ggtags-mode`
+- GNU global -- use with Emacs `gtags-mode` or newer ``ggtags-mode`
 
 No demo for `etags`, `cscope` or 'ggtags`.
 
@@ -255,10 +212,10 @@ NOTE: this is how you did it before language servers.
 
 
 ```
-./demo.sh                                           +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
-./demo.sh gtags.el                                  +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
-./demo.sh gtags.el gxref.el                         +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
-./demo.sh gtags.el gxref.el orderless.el vertico.el +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+emacs -q                                           +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+emacs -q gtags.el                                  +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+emacs -q gtags.el gxref.el                         +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+emacs -q gtags.el gxref.el orderless.el vertico.el +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
 ```
 
 #### gtags
@@ -289,28 +246,28 @@ But it seems way less powerful than `gxref` default or `gxref+orderless+vertico`
 
 #### Language Servers (lsp-mode)
 ```
-./demo.sh gtags.el gxref.el orderless.el vertico.el               +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
-./demo.sh lsp-mode.el orderless.el vertico.el                     +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
-./demo.sh lsp-mode.el gtags.el gxref.el orderless.el vertico.el   +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+emacs -q gtags.el gxref.el orderless.el vertico.el               +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+emacs -q lsp-mode.el orderless.el vertico.el                     +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
+emacs -q lsp-mode.el gtags.el gxref.el orderless.el vertico.el   +28:11 ~/w/src/hse/hse/blk_list.c & sleep 2
 ```
 
-## Nifty things that can be done during emacs initialization
+## Nifty things that can be done during Emacs initialization
 
 - Automatically install your favorite packages when first starting Emacs
   instead of having to navigate into the package menu system to manually select
   them.  See code and comments in [emacs.d/init.el](emacs.d/init.el).
 
 - Use different package dirs for different versions of Emacs to avoid problems
-  when switching between different versions of emacs.
+  when switching between different versions of Emacs.
 
 - Use Git submodules for packages of interest that weren't available on the
   package archives you use.  This demo uses a Git submodule for `gtags-mode`
-  because the package archives only have `gtags-mode`for emacs version 28 and
+  because the package archives only have `gtags-mode`for Emacs version 28 and
   later.
 
 ## Using this emacs.d as a template for your ~/.emacs.d
 
-If you are willing to throw away your current emacs configuration, the steps are easy:
+If you are willing to throw away your current Emacs configuration, the steps are easy:
 ```
 mv ~/.emacs ~/.emacs.OLD
 mv ~/.emacs.d ~/.emacs.d
@@ -329,9 +286,4 @@ If you want to use `gtags`, you can put your `.emacs.d` files on GitHub and do
 what this demo does with git submodules, or you can find it in a package
 archive.  It is available at
 [Gnu ELPA](https://elpa.gnu.org/packages/gtags-mode.html),
-but only for emacs 28 and later.
-
-
-
-
-
+but only for Emacs 28 and later.
