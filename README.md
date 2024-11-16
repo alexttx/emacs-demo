@@ -2,12 +2,10 @@
 
 I initially created this collection of Emacs initialization files as a way to
 experiment with various Emacs packages without having to modify my own Emacs
-configuration.  But it has morphed into a sort of demo with three distinct values:
+configuration.  But it has morphed into a sort of demo with three distinct uses:
 - it facilitates experimenting with Emacs packages in a sandbox environment
 - it contains examples of nifty and useful things you can do during Emacs initialization
 - it can be used as a template for your `~/.emacs.d` initialization
-
-These three topics are discussed in more detail below.
 
 Most of the "nifty and useful" Emacs initialization tricks came from [Kaushal
 Modi's Emacs config files](https://github.com/kaushalmodi/.emacs.d/).
