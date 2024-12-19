@@ -11,7 +11,7 @@
 ;; Load newer version of .el and .elc if both are available.
 (setq load-prefer-newer t)
 
-;; Store `M-x customize` settings in its own file
+;; Store `M-x customize` settings a dedicated file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file :noerror :nomessage)
 
@@ -67,10 +67,12 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(message (format "Using package dir %s" package-user-dir))
-
 ;; These packages will be automatically downloaded and installed on startup
-;; if they are missing from your package directory.
+;; if they are missing from the user package directory which is initalized
+;; in early-init.el which was loaded at the top of this file.
+
+(message (format "User package dir: %s" package-user-dir))
+
 (defconst
   my-packages
   '(
@@ -120,115 +122,24 @@ to be installed.")
 (setq use-package-verbose 'debug);; values: nil, t, 'debug, 'errors
 (require 'use-package)
 
-(when t
-
-  ;; Disable eldoc mode.  Does this work?
-  (if (fboundp 'global-eldoc-mode)
-      (global-eldoc-mode -1))
-
-  (setq delete-active-region nil)
+;; Global settings
+(when nil ;; nil=disabled t=enabled
   (setq truncate-lines t)
-  (setq compilation-scroll-output t)
-  (setq-default vc-handled-backends nil)   ;; no auto version control please
   (setq-default indent-tabs-mode nil)
-  (setq-default gdb-many-windows 1)
-  (setq-default frame-title-format '("%b"))
   (setq-default fill-column 80)
-
-  ;; Is this the right way to set default font size?
-  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10"))
-  ;; frame size
-  (add-to-list 'default-frame-alist '(height . 45))
-  (add-to-list 'default-frame-alist '(width . 90))
-  ;; colors
-  (add-to-list 'default-frame-alist '(background-color . "grey90"))
-  (add-to-list 'default-frame-alist '(foreground-color . "black"))
-
-  (set-face-background 'mode-line-inactive "grey80")
-  (set-face-background 'mode-line "#aabbdd")
-
-  (put 'narrow-to-region 'disabled nil)
-
-  ;; Present a (y or n) at the end of certain questions without
-  ;; the need for a confirmation.
-  (fset 'yes-or-no-p (symbol-function 'y-or-n-p))
   )
 
-(when t
-  ;; tweak syntax by mode
-  (modify-syntax-entry ?_ "w" (standard-syntax-table))
-
-  (modify-syntax-entry ?- "w" lisp-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" lisp-mode-syntax-table)
-
-  (modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" emacs-lisp-mode-syntax-table)
-
-  (modify-syntax-entry ?- "w" text-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" text-mode-syntax-table)
-
-  ;;(modify-syntax-entry ?_ "w" sh-mode-syntax-table)
-  )
-
-(setq my-global-key-bindings t)
-(setq my-commands t)
-
-(when (and my-global-key-bindings my-commands)
-  (defun my-gosmacs-previous-window ()
-    "Select the window above or to the left of the window now selected.
-From the window at the upper left corner, select the one at the lower right."
-    (interactive)
-    (select-window (previous-window)))
-
-  (defun my-gosmacs-next-window ()
-    "Select the window below or to the right of the window now selected.
-From the window at the lower right corner, select the one at the upper left."
-    (interactive)
-    (select-window (next-window)))
-
-  (defun my-kill-emacs-confirm (verify)
-    (interactive "sAre you sure you want to quit? ")
-    (if (or (string-equal verify "yes")
-            (string-equal verify "y")
-            (string-equal verify "Y")
-            (string-equal verify "yes"))
-        (save-buffers-kill-emacs))))
-
-(when my-global-key-bindings
-  ;; Global key bindings
-  (global-set-key "\C-xh"      'help-command)
-  (global-set-key "\C-xhu"     'manual-entry)
-  (global-set-key "\C-x\C-b"   'buffer-menu)
-  (global-set-key "\M-q"       'query-replace)
-  (global-set-key "\M-r"       'replace-string)
-  (global-set-key "\M-F"       'fill-paragraph)
-  (global-set-key "\C-x\C-f"   'find-file-at-point)
-  (global-set-key "\C-h"       'backward-delete-char)
-  (global-set-key "\M-h"       'backward-kill-word)
-
-  ;; These bindings cause me pain
-  (global-unset-key "\C-\\")            ; toggle-input-method
-  (global-unset-key "\C-z")             ; iconify frame
-  (global-unset-key "\C-x\C-z")         ; suspend frame
-  (global-unset-key "\C-x\C-l")         ; lower case region
-  (global-unset-key "\C-x\C-u")         ; upper case region
-
-  ;; My own C-x C-x keymap : easy to type and an entire
-  ;; keymap to put my own bindings.
+;; keymap to put my own bindings.
+(when nil ;; nil=disabled t=enabled
   (defvar xx-map (make-keymap) "Keymap for custom commands.")
   (global-set-key "\C-x\C-x" xx-map)
-
   ;; Rebind exchange-point-and-mark since it used to be C-xC-x
   (global-set-key "\C-x\C-m"   'exchange-point-and-mark)
-
+  
+  ;; xx-map  bindings
   (define-key xx-map " "     'set-mark-command)
   (define-key xx-map "r"     'revert-buffer)
   (define-key xx-map "\C-e"  'compile)
-
-  (when my-commands
-    (global-set-key "\C-xn"     'my-gosmacs-next-window)
-    (global-set-key "\C-xp"     'my-gosmacs-previous-window)
-    (global-set-key "\C-x\C-c"  'my-kill-emacs-confirm))
   )
 
 ;; Notes on Use-package
@@ -280,15 +191,14 @@ From the window at the lower right corner, select the one at the upper left."
   (defvar my-use-projectile nil)
   (defvar my-use-gfm-mode nil)
   (defvar my-use-dired nil)
-  (defvar my-use-magit nil)
-  (defvar my-use-gtags-mode nil) ;; better IMO than ggtags
-  (defvar my-use-gxref nil)      ;; strongly recommend gxref w/ gtags
-  (defvar my-use-ggtags nil)     ;; gtags+gxref is nicer than ggtags
+  (defvar my-use-gtags-mode nil)
+  (defvar my-use-gxref nil)
+  (defvar my-use-ggtags nil)
   (defvar my-use-lsp-mode nil)
   (defvar my-use-lsp-ui nil)
   (defvar my-use-lsp-ivy nil)
   (defvar my-use-lsp-treemacs nil)
-  (defvar my-use-ivy-xref nil)   ;; not a fan of ivy-xref
+  (defvar my-use-ivy-xref nil)
   )
 
 (use-package which-key
@@ -384,33 +294,6 @@ From the window at the lower right corner, select the one at the upper left."
   (set-face-attribute 'markdown-header-face-5 nil :inherit 'markdown-header-face :foreground "SteelBlue1")
   (set-face-attribute 'markdown-header-face-6 nil :inherit 'markdown-header-face :foreground "DeepSkyBlue1"))
 
-(use-package magit
-  :if my-use-magit
-  :init
-  (setq my-magit-section-recenter-looking-at "@@ \\|modified")
-  (add-hook 'magit-mode-hook (function
-                              (lambda ()
-                                (magit-auto-revert-mode -1);; disable
-                                (local-set-key "n" 'my-magit-section-forward)
-                                (local-set-key "p" 'my-magit-section-backward))))
-  (defun my-magit-section-forward ()
-    (interactive)
-    (call-interactively 'magit-section-forward)
-    (if (looking-at my-magit-section-recenter-looking-at)
-        (recenter 0)))
-  (defun my-magit-section-backward ()
-    (interactive)
-    (call-interactively 'magit-section-backward)
-    (if (looking-at my-magit-section-recenter-looking-at)
-        (recenter 0)))
-
-  :config
-  ;; disable git-rebase-mode
-  (setq auto-mode-alist
-        (seq-remove
-         (lambda (elt) (eq 'git-rebase-mode (cdr elt)))
-         auto-mode-alist)))
-
 (use-package gtags-mode
   ;; - Gtags and other tagging systems (etags, cscope, gtags, etc) are the "old"
   ;;   way of navigating source code. Language servers are the "new" way.
@@ -435,7 +318,6 @@ From the window at the lower right corner, select the one at the upper left."
       (define-key (current-global-map) [remap xref-find-references]  'gtags-find-rtag) ;; usually "M-?"
       (define-key (current-global-map) [remap xref-pop-marker-stack] 'gtags-pop-stack) ;; usually "M-,"
       )
-    (setq gtags-auto-update nil)
     (add-hook 'c-mode-hook (function (lambda () (gtags-mode 1))))
     (add-hook 'c++-mode-hook (function (lambda () (gtags-mode 1))))
     ))
@@ -471,11 +353,8 @@ From the window at the lower right corner, select the one at the upper left."
   (progn
     (setq lsp-keymap-prefix "C-c l")
     (defun my-hookfn-lsp-mode ()
-      (let ((fn "my-hookfn-lsp-mode"))
-        (message (concat fn " enter"))
-        (if (fboundp 'lsp-enable-which-key-integration)
-            (lsp-enable-which-key-integration))
-        (message (concat fn " exit"))))
+      (if (fboundp 'lsp-enable-which-key-integration)
+          (lsp-enable-which-key-integration)))
     (add-hook 'lsp-mode-hook 'my-hookfn-lsp-mode)
     ;;(setq lsp-enable-snippet nil)
     ;;(setq lsp-ui-imenu-enable nil)

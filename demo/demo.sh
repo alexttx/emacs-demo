@@ -68,7 +68,7 @@ while (( more && $# > 0 )); do
     case "$1" in
         (-h) help;;
         (-v) verbose=1; shift;;
-        (-n) verbose=1; fake=1; shit;;
+        (-n) verbose=1; fake=1; shift;;
         (--) more=0; shift;;
         (-*) syntax "Invalid option: $1";;
         (*)  f=$(is_demo_file "$1") || err "Cannot demo init file for '$1'"
@@ -87,7 +87,7 @@ else
     name="${load_names[*]}"
 fi
 
-emacs_args=(-q "${load_args[@]}" -l "$CMD_DIR"/../demo-init.el --name "$name" "$@")
+emacs_args=(-Q "${load_args[@]}" -l "$CMD_DIR"/../demo-init.el --name "$name" "$@")
 if (( verbose || fake )); then
     echo emacs "${emacs_args[@]}"
 fi
